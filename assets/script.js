@@ -22,10 +22,31 @@ $(document).ready(function () {
             .attr("id", `textarea-${i+9}`)
             .text(JSON.parse(localStorage.getItem(`textarea-${i+9}`)));
 
+        // color coding for past present future
+        if (i + 9 < currentHour) {
+            newTimeblock.find("textarea").addClass("past");
+        } else if (i + 9 > currentHour) {
+            newTimeblock.find("textarea").addClass("future");
+        } else {
+            newTimeblock.find("textarea").addClass("present");
+        }
+
+        // save button
+        newTimeblock.find("button.saveBtn").attr("data-target", `textarea-${i+9}`);
 
         // append to container
         container.append(newTimeblock);
     }
 
+    // save button click event
+    $(document).on("click", "button.saveBtn", function () {
+
+        // target corresponding text area
+        var target = $(this).attr("data-target");
+
+        // save input to local storage
+        var input = $(document.getElementById(target)).val();
+        localStorage.setItem(target, JSON.stringify(input));
+    })
     
 });
